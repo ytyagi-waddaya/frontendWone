@@ -24,8 +24,9 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      - name: Start the frontend app in background
+      - name: Start frontend with PM2
         run: |
-          nohup npm run start > frontend.log 2>&1 &
+          pm2 delete frontend || true
+          pm2 start npm --name "frontend" -- run start
         env:
           PORT: 3001
