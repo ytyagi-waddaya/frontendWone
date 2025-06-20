@@ -3,11 +3,11 @@ name: Deploy Frontend on SUSE Self-Hosted Runner
 on:
   push:
     branches:
-      - main  # or the branch you deploy from
+      - main  # adjust if needed
 
 jobs:
   deploy:
-    runs-on: self-hosted  # runs on your SUSE server
+    runs-on: self-hosted  # your SUSE GitHub runner
 
     steps:
       - name: Checkout repo
@@ -16,7 +16,7 @@ jobs:
       - name: Setup environment variables
         run: |
           echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" > .env.local
-          # Add more if needed
+          echo "PORT=3001" >> .env.local
 
       - name: Install dependencies
         run: npm install
@@ -24,7 +24,8 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      - name: Start the frontend app
-        run: npm run start
+      - name: Start the frontend app in background
+        run: |
+          nohup npm run start > frontend.log 2>&1 &
         env:
           PORT: 3001
