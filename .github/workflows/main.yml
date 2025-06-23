@@ -24,11 +24,6 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      - name: Free up port 3001 (kill if in use)
-        run: |
-          echo "Killing any process using port 3001..."
-          lsof -t -i:3001 | xargs -r kill -9 || true
-
       - name: Start frontend with PM2
         run: |
           pm2 delete frontend || true
