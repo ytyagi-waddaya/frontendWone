@@ -72,6 +72,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DataTable } from "@/components/tables/ticket/DataTable";
 import { columns, Ticket } from "@/components/tables/ticket/column";
+import ExportToExcelButton from "@/components/export";
 
 const PAGE_SIZE = 10;
 
@@ -245,6 +246,8 @@ export default function TicketsListPage() {
           Reset Filters
         </Button>
       )}
+
+      <ExportToExcelButton data={filteredTickets} />
 
       {/* Table */}
       <DataTable columns={columns} data={paginatedTickets} />

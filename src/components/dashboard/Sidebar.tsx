@@ -23,11 +23,14 @@ import {
 } from "@/components/ui/sidebar";
 import { Separator } from "../ui/separator";
 import { NavUser } from "./nav-user";
+import Image from "next/image";
+import AuthImage from "./AuthImage";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   roles: string[]; // 👈 explicitly define roles prop
   userName?: string;
   userEmail?: string;
+  image: string;
 }
 
 const data = {
@@ -71,7 +74,7 @@ const data = {
   ],
 };
 
-export function AppSidebar({ roles =[],  userName, userEmail, ...props }: AppSidebarProps) {
+export function AppSidebar({ roles =[],  userName, userEmail, image, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -80,7 +83,8 @@ export function AppSidebar({ roles =[],  userName, userEmail, ...props }: AppSid
             <SidebarMenuButton asChild size="lg">
               <a href="#" className="flex items-center gap-2">
                 <div className="flex aspect-square size-8 items-center justify-center">
-                    <img src="/vector.svg" alt="auth image" width={100} height={80} />
+                    {/* <Image src={image} alt="auth image" width={100} height={80}/> */}
+                    <AuthImage/>
                 </div>
                 <div className="flex flex-col items-start">
                     <span className="text-xs font-bold leading-none">WONE</span>

@@ -93,66 +93,118 @@
 //   matcher: ["/dashboard/:path*"], 
 // };
 
+
+// *********************************************************************//
+
+// import { NextRequest, NextResponse } from "next/server";
+// import { validateAuth } from "@/lib/validations/validateAuth";
+// import { jwtDecode } from "jwt-decode";
+
+// interface DecodedToken {
+//   userId: string;
+//   name: string;
+//   email: string;
+//   role: string | string[]; // can be single or multiple roles
+// }
+
+// export const middleware = async (req: NextRequest) => {
+//   try {
+//     console.log("🔍 Middleware triggered:", req.nextUrl.pathname);
+
+//     const accessToken = req.cookies.get("access_token")?.value;
+//     const refreshToken = req.cookies.get("refresh_token")?.value;
+
+//     if (!accessToken && !refreshToken) {
+//       console.warn("⚠️ No tokens present. Redirecting to /");
+//       const url = req.nextUrl.clone();
+//       url.pathname = "/";
+//       return NextResponse.redirect(url);
+//     }
+
+//     // Validate tokens
+//     const authData = await validateAuth(accessToken || "", refreshToken || "");
+//     if (!authData?.success) {
+//       console.warn("❌ Invalid token. Redirecting to /");
+//       const url = req.nextUrl.clone();
+//       url.pathname = "/";
+//       return NextResponse.redirect(url);
+//     }
+
+//     // Decode token
+//     const decoded = jwtDecode<DecodedToken>(accessToken || "");
+
+//     // Handle role: string or array
+//     const roles = decoded.role;
+//     const roleString =
+//       Array.isArray(roles) ? roles.join(",") : typeof roles === "string" ? roles : "";
+
+//     const response = NextResponse.next();
+
+//     // Set all custom headers you may need
+//     response.headers.set("x-user-id", decoded.userId);
+//     response.headers.set("x-user-name", decoded.name);
+//     response.headers.set("x-user-email", decoded.email);
+//     response.headers.set("x-user-role", roleString); // comma-separated if multiple
+
+//     return response;
+//   } catch (error) {
+//     console.error("🔥 Middleware error:", error);
+//     const url = req.nextUrl.clone();
+//     url.pathname = "/";
+//     return NextResponse.redirect(url);
+//   }
+// };
+
+// // Apply middleware only on dashboard routes
+// export const config = {
+//   matcher: ["/dashboard/:path*"],
+// };
+
+
+
 import { NextRequest, NextResponse } from "next/server";
-import { validateAuth } from "@/lib/validations/validateAuth";
 import { jwtDecode } from "jwt-decode";
 
 interface DecodedToken {
-  userId: string;
+  id: string;
   name: string;
   email: string;
-  role: string | string[]; // can be single or multiple roles
+  role: string | string[];
 }
 
-export const middleware = async (req: NextRequest) => {
-  try {
-    console.log("🔍 Middleware triggered:", req.nextUrl.pathname);
+export function middleware(req: NextRequest) {
+  console.log("🔍 [Middleware] Path:", req.nextUrl.pathname);
 
-    const accessToken = req.cookies.get("access_token")?.value;
-    const refreshToken = req.cookies.get("refresh_token")?.value;
+  const accessToken = req.cookies.get("access_token")?.value;
+  const refreshToken = req.cookies.get("refresh_token")?.value;
 
-    if (!accessToken && !refreshToken) {
-      console.warn("⚠️ No tokens present. Redirecting to /");
-      const url = req.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
-    }
-
-    // Validate tokens
-    const authData = await validateAuth(accessToken || "", refreshToken || "");
-    if (!authData?.success) {
-      console.warn("❌ Invalid token. Redirecting to /");
-      const url = req.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
-    }
-
-    // Decode token
-    const decoded = jwtDecode<DecodedToken>(accessToken || "");
-
-    // Handle role: string or array
-    const roles = decoded.role;
-    const roleString =
-      Array.isArray(roles) ? roles.join(",") : typeof roles === "string" ? roles : "";
-
-    const response = NextResponse.next();
-
-    // Set all custom headers you may need
-    response.headers.set("x-user-id", decoded.userId);
-    response.headers.set("x-user-name", decoded.name);
-    response.headers.set("x-user-email", decoded.email);
-    response.headers.set("x-user-role", roleString); // comma-separated if multiple
-
-    return response;
-  } catch (error) {
-    console.error("🔥 Middleware error:", error);
+  if (!accessToken && !refreshToken) {
+    console.warn("⚠️ No tokens found. Redirecting to login...");
     const url = req.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
   }
-};
 
-// Apply middleware only on dashboard routes
+  const response = NextResponse.next();
+
+  // OPTIONAL: add metadata headers (do NOT use for auth purposes)
+  if (accessToken) {
+    try {
+      const decoded = jwtDecode<DecodedToken>(accessToken);
+      const roleString = Array.isArray(decoded.role) ? decoded.role.join(",") : decoded.role;
+
+      response.headers.set("x-user-id", decoded.id);
+      response.headers.set("x-user-name", decoded.name);
+      response.headers.set("x-user-email", decoded.email);
+      response.headers.set("x-user-role", roleString);
+    } catch (err) {
+      console.warn("⚠️ Failed to decode token:", err);
+    }
+  }
+
+  return response;
+}
+
 export const config = {
   matcher: ["/dashboard/:path*"],
 };

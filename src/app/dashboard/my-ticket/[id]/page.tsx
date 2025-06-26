@@ -202,75 +202,75 @@ export default function TicketDetailWithComments() {
                       )} */}
 
                       {(ticket.attachments?.length ?? 0) > 0 && (
-  <Dialog open={isAttachmentDialogOpen} onOpenChange={setIsAttachmentDialogOpen}>
-    <DialogTrigger asChild>
-      <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-700">
-        <PaperclipIcon className="h-4 w-4 mr-2" />
-        {(ticket.attachments?.length ?? 0)} attachment
-        {(ticket.attachments?.length ?? 0) !== 1 ? 's' : ''}
-      </Button>
-    </DialogTrigger>
-    <DialogContent className="sm:max-w-[600px]">
-      <DialogHeader>
-        <DialogTitle>Attachments</DialogTitle>
-      </DialogHeader>
+                      <Dialog open={isAttachmentDialogOpen} onOpenChange={setIsAttachmentDialogOpen}>
+                        <DialogTrigger asChild>
+                          <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-700">
+                            <PaperclipIcon className="h-4 w-4 mr-2" />
+                            {(ticket.attachments?.length ?? 0)} attachment
+                            {(ticket.attachments?.length ?? 0) !== 1 ? 's' : ''}
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[600px]">
+                          <DialogHeader>
+                            <DialogTitle>Attachments</DialogTitle>
+                          </DialogHeader>
 
-      <div className="grid gap-4 py-4">
-        {(ticket.attachments as Attachment[] | undefined)?.map(
-          (attachment: Attachment, index: number) => {
-            const blobUrl = createBlobUrl(attachment);
-            return (
-              <div key={index} className="flex flex-col gap-2 p-3 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  <PaperclipIcon className="h-5 w-5 text-gray-500" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">{attachment.name}</p>
-                    <p className="text-xs text-gray-500">{(attachment.size / 1024).toFixed(2)} KB</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => {
-                        setViewedAttachmentUrl(blobUrl);
-                        setViewedAttachmentMime(attachment.mimeType);
-                      }}
-                    >
-                      View
-                    </Button>
-                    <a
-                      href={blobUrl}
-                      download={attachment.name}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Button variant="outline" size="sm">Download</Button>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-      </div>
+                          <div className="grid gap-4 py-4">
+                            {(ticket.attachments as Attachment[] | undefined)?.map(
+                              (attachment: Attachment, index: number) => {
+                                const blobUrl = createBlobUrl(attachment);
+                                return (
+                                  <div key={index} className="flex flex-col gap-2 p-3 border rounded-lg">
+                                    <div className="flex items-center gap-3">
+                                      <PaperclipIcon className="h-5 w-5 text-gray-500" />
+                                      <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-medium text-gray-900 truncate">{attachment.name}</p>
+                                        <p className="text-xs text-gray-500">{(attachment.size / 1024).toFixed(2)} KB</p>
+                                      </div>
+                                      <div className="flex gap-2">
+                                        <Button
+                                          variant="secondary"
+                                          size="sm"
+                                          onClick={() => {
+                                            setViewedAttachmentUrl(blobUrl);
+                                            setViewedAttachmentMime(attachment.mimeType);
+                                          }}
+                                        >
+                                          View
+                                        </Button>
+                                        <a
+                                          href={blobUrl}
+                                          download={attachment.name}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                        >
+                                          <Button variant="outline" size="sm">Download</Button>
+                                        </a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                          </div>
 
-      {viewedAttachmentUrl && (
-        <div className="mt-6 border-t pt-4">
-          <h4 className="text-sm font-semibold mb-2">Preview</h4>
-          {viewedAttachmentMime?.startsWith("image/") && (
-            <img src={viewedAttachmentUrl} alt="Attachment Preview" className="max-h-96 w-auto rounded shadow" />
-          )}
-          {viewedAttachmentMime === "application/pdf" && (
-            <iframe
-              src={viewedAttachmentUrl}
-              title="PDF Preview"
-              className="w-full h-[500px] rounded border"
-            />
-          )}
-        </div>
-      )}
-    </DialogContent>
-  </Dialog>
-)}
+                          {viewedAttachmentUrl && (
+                            <div className="mt-6 border-t pt-4">
+                              <h4 className="text-sm font-semibold mb-2">Preview</h4>
+                              {viewedAttachmentMime?.startsWith("image/") && (
+                                <img src={viewedAttachmentUrl} alt="Attachment Preview" className="max-h-96 w-auto rounded shadow" />
+                              )}
+                              {viewedAttachmentMime === "application/pdf" && (
+                                <iframe
+                                  src={viewedAttachmentUrl}
+                                  title="PDF Preview"
+                                  className="w-full h-[500px] rounded border"
+                                />
+                              )}
+                            </div>
+                          )}
+                        </DialogContent>
+                      </Dialog>
+                    )}
 
 
 

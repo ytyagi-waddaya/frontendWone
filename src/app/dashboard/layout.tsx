@@ -109,6 +109,9 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { headers } from "next/headers";
 import { Skeleton } from "@/components/skeleton";
 
+
+const image = "/vector.svg";
+
 export default async function RootLayout({
   children,
 }: {
@@ -186,7 +189,9 @@ export default async function RootLayout({
         roles={roles}
         userName={userName}
         userEmail={userEmail}
+        image={image}
         variant="inset"
+
       />
       <SidebarInset>
         <SiteHeader />

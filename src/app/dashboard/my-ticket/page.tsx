@@ -26,11 +26,12 @@ export default function TicketsListPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   
-  const { data: ticketsData, isLoading, isError, error } = useQuery({
-    queryKey: ["tickets"],
-    queryFn: TicketsByUserId, 
-    // queryClient.invalidateQueries(["tickets"])
-  });
+const [activeOnly, setActiveOnly] = useState(true);
+
+const { data: ticketsData } = useQuery({
+  queryKey: ["tickets", activeOnly],
+  queryFn: () => TicketsByUserId(activeOnly),
+});
 
 //   const departmentQuery = useQuery({
 //     queryKey: ["departments"],
@@ -103,8 +104,8 @@ export default function TicketsListPage() {
     }
   };
 
-  if (isLoading) return <p>Loading tickets...</p>;
-  if (isError) return <p className="text-red-500">Error: {(error as any)?.message}</p>;
+  // if (isLoading) return <p>Loading tickets...</p>;
+  // if (isError) return <p className="text-red-500">Error: {(error as any)?.message}</p>;
 
   return (
     <div className="p-6 space-y-6">
@@ -190,6 +191,11 @@ export default function TicketsListPage() {
           Reset Filters
         </Button>
       )}
+
+      <Button variant="outline" onClick={() => setActiveOnly((prev) => !prev)}>
+  {activeOnly ? "Show All My Related Tickets" : "Show Only My Active Tickets"}
+</Button>
+
 
       {/* Table */}
       <DataTable columns={columns} data={paginatedTickets} />

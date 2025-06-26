@@ -49,12 +49,23 @@ export const getTickets = async () => {
   return response.data;
 };
 
-export const TicketsByUserId = async () => {
-  const response = await apiClient.get("/tickets/users");
-  console.log(response.data);
+// export const TicketsByUserId = async () => {
+//   const response = await apiClient.get("/tickets/users");
+//   console.log(response.data);
+  
+//   return response.data;
+// };
+
+export const TicketsByUserId = async (activeOnly = false) => {
+  const response = await apiClient.get("/tickets/users", {
+    params: { activeOnly }
+  });
+
+  console.log("BY USER:",response.data);
   
   return response.data;
 };
+
 
 export const getTicket = async (id: string)=> {
   const response = await apiClient.get(`/tickets/${id}`);
@@ -267,5 +278,7 @@ export const getAllRoles = async () => {
 
 export const getAllDepartments = async () => {
   const response = await apiClient.get("/departments"); 
-  return response.data.departments;
-};
+  console.log(response.data);
+  
+  return response.data;
+}; 

@@ -43,11 +43,12 @@ export default function TicketForm() {
     },
   });
 
-  const { data: departments= [], isLoading, isError } = useQuery<Department[]>({
+  const { data, isLoading, isError } = useQuery({
   queryKey: ["departments"],
   queryFn: getAllDepartments,
 });
 
+const departments: Department[] = data?.departments || [];
 
   const onSubmit = (data: TicketFormData) => {
     const formData = new FormData();
