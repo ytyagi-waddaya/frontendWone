@@ -49,6 +49,11 @@ export const getTickets = async () => {
   return response.data;
 };
 
+export const getTicketWithDuration = async (ticketId: string) => {
+  const response = await apiClient.get(`/tickets/${ticketId}/duration`);
+  return response.data;
+};
+
 // export const TicketsByUserId = async () => {
 //   const response = await apiClient.get("/tickets/users");
 //   console.log(response.data);

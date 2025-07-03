@@ -21,6 +21,7 @@ export default function ExportToExcelButton({
       Priority: ticket.priority,
       Status: ticket.status,
       Department: ticket.department,
+      Duration: ticket.duration,
       "Assigned To": ticket.assignedTo,
       "Created By": ticket.createdBy,
       "Created At": ticket.createdAt,
