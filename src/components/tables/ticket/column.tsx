@@ -11,6 +11,7 @@ export type Ticket = {
   status: string;
   department: string;
   assignedTo: string;
+  duration: string;
   createdBy: string;
   createdAt: string;
   description?:string;
@@ -77,6 +78,10 @@ export const columns: ColumnDef<Ticket>[] = [
   {
     accessorKey: "createdBy",
     header: "Created By",
+  },
+  {
+    accessorKey: "duration",
+    header: "Duration",
   },
   {
     accessorKey: "createdAt",
