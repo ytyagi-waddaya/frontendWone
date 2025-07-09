@@ -39,19 +39,19 @@ const data = {
       title: "Dashboard",
       url: "/dashboard/home",
       icon: LayoutDashboardIcon,
-      roles: ["ADMIN", "AGENT"],
+      roles: ["ADMIN", "AGENT", "CLIENT"],
     },
     {
       title: "My Tickets",
       url: "/dashboard/my-ticket",
       icon: TicketIcon,
-      roles: ["ADMIN", "AGENT"],
+      roles: ["ADMIN", "AGENT", "CLIENT"],
     },
     {
       title: "Create Ticket",
       url: "/dashboard/ticket",
       icon: PlusCircleIcon,
-      roles: ["ADMIN", "AGENT"],
+      roles: ["ADMIN", "AGENT", "CLIENT"],
     },
     {
       title: "Ticket Pool",
