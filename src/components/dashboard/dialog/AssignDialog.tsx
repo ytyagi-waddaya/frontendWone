@@ -48,35 +48,36 @@ export default function AssignDialog({ ticketId, trigger, onAssigned }: AssignDi
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Assign Ticket</DialogTitle>
-        </DialogHeader>
-        <div className="space-y-4">
-          {isUsersLoading ? (
-            <p>Loading users...</p>
-          ) : (
-            data?.users?.map((user: User) => (
-              <div
-                key={user.id}
-                className="flex items-center justify-between border p-2 rounded hover:bg-gray-50 transition"
-              >
-                <div>
-                  <p className="text-sm font-medium">{user.name}</p>
-                  <p className="text-xs text-gray-500">{user.email}</p>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={() => mutation.mutate({ assignedToId: user.id })}
-                  disabled={mutation.isPending}
-                >
-                  Assign
-                </Button>
-              </div>
-            ))
-          )}
+      <DialogContent className="sm:max-w-md max-h-[80vh] overflow-y-auto">
+  <DialogHeader>
+    <DialogTitle>Assign Ticket</DialogTitle>
+  </DialogHeader>
+  <div className="space-y-4">
+    {isUsersLoading ? (
+      <p>Loading users...</p>
+    ) : (
+      data?.users?.map((user: User) => (
+        <div
+          key={user.id}
+          className="flex items-center justify-between border p-2 rounded hover:bg-gray-50 transition"
+        >
+          <div>
+            <p className="text-sm font-medium">{user.name}</p>
+            <p className="text-xs text-gray-500">{user.email}</p>
+          </div>
+          <Button
+            size="sm"
+            onClick={() => mutation.mutate({ assignedToId: user.id })}
+            disabled={mutation.isPending}
+          >
+            Assign
+          </Button>
         </div>
-      </DialogContent>
+      ))
+    )}
+  </div>
+</DialogContent>
+
     </Dialog>
   );
 }

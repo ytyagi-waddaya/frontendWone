@@ -44,10 +44,40 @@ export const createTicket = async (formData:FormData) => {
   return response.data;
 };
 
-export const getTickets = async () => {
-  const response = await apiClient.get("/tickets/tickets");
+// export const getTickets = async () => {
+//   const response = await apiClient.get("/tickets/tickets");
+//   return response.data;
+// };
+
+export const getTickets = async ({
+  page = 1,
+  limit = 10,
+  search = "",
+  departmentId = "",
+  priorityId = "",
+  statusId = "",
+}: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  departmentId?: string;
+  priorityId?: string;
+  statusId?: string;
+}) => {
+  const response = await apiClient.get("/tickets/tickets", {
+    params: {
+      page,
+      limit,
+      search,
+      departmentId,
+      priorityId,
+      statusId,
+    },
+  });
+
   return response.data;
 };
+
 
 export const getTicketWithDuration = async (ticketId: string) => {
   const response = await apiClient.get(`/tickets/${ticketId}/duration`);
